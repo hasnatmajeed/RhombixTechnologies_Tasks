@@ -1,26 +1,11 @@
-import { useEffect, useState } from "react";
+import RegisterForm from "./components/RegisterForm";
+import LoginForm from "./components/LoginForm";
 
 function App() {
-
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-
-    fetch("http://localhost:3000", {
-      credentials: "include"
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        setMessage(data);
-      });
-
-  }, []);
-
   return (
     <div>
-      <h1>MERN Todo App</h1>
-
-      <p>{message}</p>
+      <RegisterForm />
+      <LoginForm />
     </div>
   );
 }

@@ -43,7 +43,7 @@ const user = await User.create({
     console.log(name, email, password);
 
     res.status(200).json({
-        message: "Register route working"
+        message: "User registered successfully"
     });
 };
 
