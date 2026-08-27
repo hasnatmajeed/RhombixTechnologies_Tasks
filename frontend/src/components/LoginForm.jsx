@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function LoginForm() {
+function LoginForm ({ setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -27,7 +27,22 @@ function LoginForm() {
   const data = await response.json();
 
   console.log(data);
+
+//Welcome, User without refresh update
+  if (response.ok) {
+  const userResponse = await fetch("http://localhost:3000/api/auth/me", {
+    credentials: "include"
+  });
+
+  if (userResponse.ok) {
+    const userData = await userResponse.json();
+    setUser(userData.user);
+  }
+}
 };
+
+
+
 
   return (
     <div>
