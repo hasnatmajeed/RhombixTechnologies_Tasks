@@ -1,70 +1,100 @@
 import { useState } from "react";
 
-function LoginForm ({ setUser }) {
+function LoginForm({ setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-
-  //LoginForm ko backend se connect karna
+  // LoginForm ko backend se connect karna
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const response = await fetch("http://localhost:3000/api/auth/login", {
-    method: "POST",
+    const response = await fetch(
+      "http://localhost:3000/api/auth/login",
+      {
+        method: "POST",
 
-    headers: {
-      "Content-Type": "application/json"
-    },
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-    credentials: "include",
+        credentials: "include",
 
-    body: JSON.stringify({
-      email,
-      password
-    })
-  });
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
 
-  const data = await response.json();
+    const data = await response.json();
 
-  console.log(data);
+    setMessage(data.message);
 
-//Welcome, User without refresh update
-  if (response.ok) {
-  const userResponse = await fetch("http://localhost:3000/api/auth/me", {
-    credentials: "include"
-  });
+    // Welcome user without refresh
+    if (response.ok) {
+      setEmail("");
+      setPassword("");
 
-  if (userResponse.ok) {
-    const userData = await userResponse.json();
-    setUser(userData.user);
-  }
-}
-};
+      const userResponse = await fetch(
+        "http://localhost:3000/api/auth/me",
+        {
+          credentials: "include",
+        }
+      );
 
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
 
-
+        setUser(userData.user);
+      }
+    }
+  };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className="login-form-card">
+      <div className="form-header">
+        <h2>Welcome Back</h2>
+        <p>Login to continue to your todo dashboard.</p>
+      </div>
 
-      <form  onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <form className="auth-form" onSubmit={handleLogin}>
+        <div className="input-group">
+          <label htmlFor="login-email">Email</label>
 
-        <input
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <input
+            id="login-email"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
 
-        <button type="submit">Login</button>
+        <div className="input-group">
+          <label htmlFor="login-password">Password</label>
+
+          <input
+            id="login-password"
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        <button className="auth-button" type="submit">
+          Login
+        </button>
       </form>
+
+      {message && (
+        <p className="form-message">
+          {message}
+        </p>
+      )}
     </div>
   );
 }

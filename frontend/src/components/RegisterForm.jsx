@@ -34,37 +34,66 @@ function RegisterForm() {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
+  <div className="register-form-card">
+    <div className="form-header">
+      <h2>Create Account</h2>
+      <p>Register to start managing your tasks.</p>
+    </div>
 
-      <form onSubmit={handleSubmit}>
+    <form className="auth-form" onSubmit={handleSubmit}>
+      <div className="input-group">
+        <label htmlFor="register-name">Name</label>
+
         <input
+          id="register-name"
           type="text"
           placeholder="Enter your name"
           value={name}
+          required
           onChange={(e) => setName(e.target.value)}
         />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor="register-email">Email</label>
 
         <input
+          id="register-email"
           type="email"
           placeholder="Enter your email"
           value={email}
+          required
           onChange={(e) => setEmail(e.target.value)}
         />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor="register-password">Password</label>
 
         <input
+          id="register-password"
           type="password"
           placeholder="Enter your password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          required
+          onChange={(e) => setPassword(e.target.value)
+            
+          }
         />
+      </div>
 
-        <button type="submit">Register</button>
-      </form>
+      <button className="auth-button" type="submit">
+        Create Account
+      </button>
+    </form>
 
-      <p>{message}</p>
-    </div>
-  );
+    {message && (
+      <p className="form-message">
+        {message}
+      </p>
+    )}
+  </div>
+);
 }
 
 export default RegisterForm;

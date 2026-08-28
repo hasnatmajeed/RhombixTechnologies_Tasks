@@ -34,18 +34,26 @@ function UserStatus({ user, setUser }) {
   }
 };
   return (
-    <div>
-    {user ? (
-      <div>
-        <h2>Welcome, {user.name}</h2>
-        <button onClick={handleLogout}>Logout</button>
+  <div className="user-status">
+    <div className="user-profile">
+      <div className="user-avatar">
+        {user?.name?.charAt(0).toUpperCase()}
       </div>
-    ) : (
-      <p>No user logged in</p>
-    )}
+
+      <div className="user-details">
+        <span>Welcome back</span>
+        <h3>{user?.name}</h3>
+      </div>
+    </div>
+
+    <button
+      className="logout-button"
+      onClick={handleLogout}
+    >
+      Logout
+    </button>
   </div>
-    
-  );
+);
 }
 
 export default UserStatus;

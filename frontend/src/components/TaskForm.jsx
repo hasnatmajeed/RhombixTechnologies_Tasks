@@ -7,6 +7,13 @@ function TaskForm({ tasks, setTasks }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    //validation add 
+
+    if (!title.trim()) {
+  setMessage("Task title is required");
+  return;
+}
+
     const response = await fetch("http://localhost:3000/api/tasks", {
       method: "POST",
 
@@ -16,9 +23,9 @@ function TaskForm({ tasks, setTasks }) {
 
       credentials: "include",
 
-      body: JSON.stringify({
-        title
-      })
+     body: JSON.stringify({
+      title: title.trim(),
+    })
     });
 
     const data = await response.json();
@@ -28,28 +35,51 @@ function TaskForm({ tasks, setTasks }) {
     //successful block
    if (response.ok) {
   setTitle("");
-  setTasks((prevTasks) => [...prevTasks, data.task]);
+
+  setTasks((prevTasks) => [
+    ...prevTasks,
+    data.task,
+  ]);
 }
   };
 
-  return (
-    <div>
-      <h2>Add Task</h2>
+ return (
+  <section className="task-form-card">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter task"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+    <div className="task-form-header">
+      <div>
+        <span className="section-label">NEW TASK</span>
+        <h2>Add a Task</h2>
+        <p>Add something you want to complete today.</p>
+      </div>
+    </div>
+
+    <form
+      className="task-create-form"
+      onSubmit={handleSubmit}
+    >
+      <input
+        type="text"
+        placeholder="What needs to be done?"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+        maxLength={120}
         />
 
-        <button type="submit">Add Task</button>
-      </form>
+      <button type="submit">
+        Add Task
+      </button>
+    </form>
 
-      <p>{message}</p>
-    </div>
-  );
+    {message && (
+      <p className="task-message">
+        {message}
+      </p>
+    )}
+
+  </section>
+);
 }
 
 export default TaskForm;
